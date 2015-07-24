@@ -5,7 +5,7 @@
       private static double nearestX;	// used to approximate what point of the bumper  
       private static double nearestY;  // a ball collided with
    
-       public static void collide(Bumper bumper, Ball ball)
+       public static void collide(PinballBumper bumper, Ball ball)
       {
          // see if the ball hit the bumper!
          if(bumper.inBumper(ball))
@@ -29,7 +29,7 @@
             int dy=(int)ball.getdy();
             double dot_1= ux*dx+uy*dy;
             double dot_2=-uy*dx+ux*dy;
-            dot_1*=-1; // this is the actual "bounce"
+            dot_1*=-1.3; // this is the actual "bounce"
             double[] d = new double[2];
             d[0]=dot_1*ux-dot_2*uy;      //vector math
             d[1]=dot_1*uy+dot_2*ux;      //vector math
@@ -40,27 +40,27 @@
          }
       }
       
-       private static void findImpactPoint(Bumper bumper, Ball ball)
+       private static void findImpactPoint(PinballBumper bumper, Ball ball)
       {
           // first assume the nw corner is closest
          nearestX = bumper.getX();  
          nearestY = bumper.getY();
          
          // now work around the edge of the bumper looking for a closer point
-         for (int x = bumper.getX(); x <= bumper.getX() + bumper.getXWidth(); x++)  // top & bottom edges
+         for (double x = bumper.getX(); x <= bumper.getX() + bumper.getRadius(); x++)  // top & bottom edges
          {
             updateIfCloser(x, bumper.getY(), ball);
-            updateIfCloser(x, bumper.getY() + bumper.getYWidth(), ball);
+            updateIfCloser(x, bumper.getY() + bumper.getRadius(), ball);
          }
-         for (int y = bumper.getY(); y <= bumper.getY() + bumper.getYWidth(); y++)  // right & left edges
+         for (double y = bumper.getY(); y <= bumper.getY() + bumper.getRadius(); y++)  // right & left edges
          {
             updateIfCloser(bumper.getX(), y, ball);
-            updateIfCloser(bumper.getX() + bumper.getXWidth(), y, ball);
+            updateIfCloser(bumper.getX() + bumper.getRadius(), y, ball);
          }
       }
          
       // makes (x,y) the nearest point if it is closer to the ball
-       private static void updateIfCloser(int x, int y, Ball b)
+       private static void updateIfCloser(double x, double y, Ball b)
       {
          if(distance(x, y, b.getX(), b.getY()) < distance(nearestX, nearestY, b.getX(), b.getY()))
          {
