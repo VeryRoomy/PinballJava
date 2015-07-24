@@ -92,10 +92,6 @@ public class PinballBumper
    
    public boolean inBumper(Ball ball)
    {
-      for(double x = getX()-getRadius(); x <= getX() + getRadius(); x++)   //starts at upper left corner(x,y)
-         for(double y = getY()-getRadius(); y <= getY() + getRadius(); y++)
-            if(distance(x, y, ball.getX(), ball.getY()) <= ball.getRadius() ) //checks every point on the bumper
-               return true;            
-      return false;
+      return distance(getX(),getY(),ball.getX(),ball.getY()) <= getRadius() + ball.getRadius();
    }
 }

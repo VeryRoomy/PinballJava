@@ -37,7 +37,7 @@ public class PinballMap extends JPanel
       bumper1 = new PinballBumper (100, 300, 200, Color.red);
       bumper1.draw(myBuffer);
       
-      ball = new Ball(100, 100, 25, Color.black);
+      ball = new Ball(155, 100, 25, Color.black);
       ball.draw(myBuffer);
       
       
