@@ -57,7 +57,7 @@ public class PinballMap extends JPanel
       
       if (bumper1.inBumper(ball))
          {
-         ball.move(1, 1, 1, 1);
+         ball.move(550, 700, 50, 55);
          }
          
       
