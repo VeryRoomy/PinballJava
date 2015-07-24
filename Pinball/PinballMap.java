@@ -34,7 +34,7 @@ public class PinballMap extends JPanel
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
       
-      bumper1 = new PinballBumper ();
+      bumper1 = new PinballBumper (300, 300, 300, Color.red);
       bumper1.draw(myBuffer);
       
       ball = new Ball(100, 100, 25, Color.black);
@@ -54,6 +54,12 @@ public class PinballMap extends JPanel
       {
          int x[] = {50, 50,  550, 550};
          int y[] = {700, 50, 50, 700};
+      
+      if (bumper1.inBumper(ball))
+         {
+         ball.move(1, 1, 1, 1);
+         }
+         
       
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);

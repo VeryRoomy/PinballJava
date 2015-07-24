@@ -44,7 +44,7 @@ public class Ball extends Polkadot
       setX(getX()+ dx);                  // move horizontally
       setY(getY()+ dy);
       dy += .1;
-        
+             
       if(getX() >= rightEdge - getRadius())  //hit right edge
       {
          setX(rightEdge - getRadius());
