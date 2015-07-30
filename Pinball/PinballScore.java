@@ -7,8 +7,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 public class PinballScore extends JPanel
 {
-   private BufferedImage myImage;
-   private Graphics2D myBuffer;
    private JLabel label;
    private int score;
    public PinballScore()

@@ -11,7 +11,7 @@ public class PinballMap extends JPanel
    private static final ImageIcon venustoise = new ImageIcon("2aa.png");
    private BufferedImage myImage;
    private Graphics2D myBuffer;
-   private PinballBumper bumper1;
+   private PinballBumper[][] bumpers;
    private Ball ball;
    private int FRAME = 900;
    private PinballScore score;
@@ -36,8 +36,7 @@ public class PinballMap extends JPanel
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
       
-      bumper1 = new PinballBumper (350, 300, 200, Color.red);
-      bumper1.draw(myBuffer);
+      bumpers = new PinballBumper[
       
       ball = new Ball(155, 100, 25, Color.black);
       ball.draw(myBuffer);
