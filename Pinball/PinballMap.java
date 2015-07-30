@@ -36,8 +36,14 @@ public class PinballMap extends JPanel
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
       
-      bumpers = new PinballBumper[
-      
+      bumpers = new PinballBumper[5][5];
+      int n = bumpers.length;
+      for(int r = 0; r < n; r++)
+         for(int c = 0; c < bumpers[0].length; c++)
+         {
+            bumpers[r][c] = new PinballBumper( (r * 100)+100, (c*100)+100, 50, Color.red);
+            bumpers[r][c].draw(myBuffer);
+         }
       ball = new Ball(155, 100, 25, Color.black);
       ball.draw(myBuffer);
       ball.setdx(3);
@@ -58,17 +64,25 @@ public class PinballMap extends JPanel
       {
          int x[] = {50, 50,  550, 550};
          int y[] = {700, 50, 50, 700};
-         if(BumperCollisionCircular.collide(bumper1, ball))
-         {
-            score.update(20);
-         }
+         for(int r = 0; r < bumpers.length; r++)
+            for(int c = 0; c < bumpers[0].length; c++)
+            {
+               if(BumperCollisionCircular.collide(bumpers[r][c], ball))
+               {
+                  score.update(20);
+               }
+            }
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);
          myBuffer.setStroke(new BasicStroke(20.0f));
          myBuffer.drawPolyline(x, y, 4);
          ball.move(550, 700, 50, 55);
-         bumper1.draw(myBuffer);
+         for(int r = 0; r < bumpers.length; r++)
+            for(int c = 0; c < bumpers[0].length; c++)
+            {
+               bumpers[r][c].draw(myBuffer);
+            }
          repaint();
          ball.draw(myBuffer);
       
