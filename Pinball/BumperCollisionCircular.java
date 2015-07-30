@@ -29,7 +29,7 @@
             int dy=(int)ball.getdy();
             double dot_1= ux*dx+uy*dy;
             double dot_2=-uy*dx+ux*dy;
-            dot_1*=-1; // this is the actual "bounce"
+            dot_1*=-1.2; // this is the actual "bounce"
             double[] d = new double[2];
             d[0]=dot_1*ux-dot_2*uy;      //vector math
             d[1]=dot_1*uy+dot_2*ux;      //vector math
@@ -49,7 +49,9 @@
          //loop over every point on the edge of bumper and updateIfCloser
          
          for (int theta = 0; theta < 360; theta += 5){
-            
+            int x1 = (int)(bumper.getX() + bumper.getRadius() * Math.cos(theta * Math.PI /180));
+            int y1 = (int)(bumper.getY() + bumper.getRadius() * Math.sin(theta * Math.PI /180));
+            updateIfCloser(x1, y1, ball);
          }
          
          /*    FOR RECTANGLES !!!

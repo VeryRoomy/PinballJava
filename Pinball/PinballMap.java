@@ -18,7 +18,7 @@ public class PinballMap extends JPanel
    {
       myImage =  new BufferedImage(FRAME-300, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = (Graphics2D)myImage.getGraphics();
-      t1 = new Timer(5, new Listener1());
+      t1 = new Timer(10, new Listener1());
       myBuffer.setColor(new Color(208,208,208));
       myBuffer.fillRect(0,0,600,900);
       myBuffer.setColor(Color.gray);
@@ -34,11 +34,14 @@ public class PinballMap extends JPanel
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
       
-      bumper1 = new PinballBumper (100, 300, 200, Color.red);
+      bumper1 = new PinballBumper (350, 300, 200, Color.red);
       bumper1.draw(myBuffer);
       
       ball = new Ball(155, 100, 25, Color.black);
       ball.draw(myBuffer);
+      ball.setdx(3);
+      ball.setdy(5);
+   
       
       
       t1.start();

@@ -72,7 +72,7 @@ public class Ball extends Polkadot
       
       }
       
-      if(getY() >= bottomEdge - getRadius())
+      /*if(getY() >= bottomEdge - getRadius())
       {
          setY(bottomEdge - getRadius());
          dy = dy * -.5;  
@@ -82,6 +82,6 @@ public class Ball extends Polkadot
             
       }
       
-   
+   */
    }
 }
