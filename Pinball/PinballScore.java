@@ -5,17 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-public class PinballMap extends JPanel
+public class PinballScore extends JPanel
 {
-   private Timer t1, t2;
-   private static final ImageIcon venustoise = new ImageIcon("2aa.png");
    private BufferedImage myImage;
    private Graphics2D myBuffer;
-   private PinballBumper bumper1;
-   private Ball ball;
-   private int FRAME = 900;
-   private PinballScore score;
-   public PinballMap()
+   public PinballScore()
    {
       myImage =  new BufferedImage(FRAME-300, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = (Graphics2D)myImage.getGraphics();
