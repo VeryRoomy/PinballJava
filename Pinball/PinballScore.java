@@ -14,9 +14,16 @@ public class PinballScore extends JPanel
       label = new JLabel("Your score: " + 0);
       add(label);
    }
-   public void update(int x)
+   public void update(int x, int mult)
    {
-      score += x;
+      if(mult == 0)
+      {
+         score += x;
+      }
+      else
+      {
+         score += x*mult;
+      }
       label.setText("Your score: " + score);
    }
 }
