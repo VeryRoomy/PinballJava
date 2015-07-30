@@ -7,7 +7,7 @@ public class PinballDriver
       frame.setSize(600, 900);
       frame.setLocation(100, 100);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.setContentPane(new PinballMap());
+      frame.setContentPane(new PinballPanel());
       frame.setVisible(true);
    }
 }

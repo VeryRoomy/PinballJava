@@ -15,8 +15,9 @@ public class PinballMap extends JPanel
    private Ball ball;
    private int FRAME = 900;
    private PinballScore score;
-   public PinballMap()
+   public PinballMap(PinballScore s)
    {
+      score = s;
       myImage =  new BufferedImage(FRAME-300, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = (Graphics2D)myImage.getGraphics();
       t1 = new Timer(10, new Listener1());
@@ -58,14 +59,10 @@ public class PinballMap extends JPanel
       {
          int x[] = {50, 50,  550, 550};
          int y[] = {700, 50, 50, 700};
-         
-         BumperCollision.collide(bumper1, ball);
-         /*if (bumper1.inBumper(ball))
+         if(BumperCollisionCircular.collide(bumper1, ball))
          {
-         ball.move(550, 700, 50, 55);
-         } */
-         
-         
+            score.update(20);
+         }
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);

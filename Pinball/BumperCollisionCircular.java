@@ -5,7 +5,7 @@
       private static double nearestX;	// used to approximate what point of the bumper  
       private static double nearestY;  // a ball collided with
    
-       public static void collide(PinballBumper bumper, Ball ball)
+       public static boolean collide(PinballBumper bumper, Ball ball)
       {
          // see if the ball hit the bumper!
          if(bumper.inBumper(ball))
@@ -37,7 +37,9 @@
             dy=(int)Math.round(d[1]);
             ball.setdx(dx);
             ball.setdy(dy);
+            return true;
          }
+         return false;
       }
       
        private static void findImpactPoint(PinballBumper bumper, Ball ball)
