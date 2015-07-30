@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import javax.sound.sampled.*;
+import java.io.File;
 public class PinballMap extends JPanel
 {
    private Timer t1, t2;
@@ -19,6 +21,13 @@ public class PinballMap extends JPanel
    DiagBumper diag;
    private int multiplier;
    private int[] onof;
+   
+   File file;
+   AudioInputStream stream;
+   AudioFormat format;
+   DataLine.Info info;
+   Clip clip;
+   
    public PinballMap(PinballScore s)
    {
       score = s;
@@ -39,6 +48,13 @@ public class PinballMap extends JPanel
    
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
+      
+      file = new File("____.wav");
+      stream = AudioSystem.getAudioInputStream(file);
+      format = stream.getFormat();
+      info = new DataLine.Info(Clip.class, format);
+      clip = (Clip) AudioSystem.getLine(info);
+      clip.open(stream);
       
       multiplier = 0;
       onof = new int[3];
@@ -110,6 +126,7 @@ public class PinballMap extends JPanel
             {
                if(BumperCollisionCircular.collide(bumpers[r][c], ball))
                {
+                  clip.start();
                   score.update(20, multiplier);
                }
             }
