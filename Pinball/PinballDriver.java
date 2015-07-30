@@ -5,7 +5,7 @@ public class PinballDriver
    {
       JFrame frame = new JFrame ("Pinball");
       frame.setSize(600, 900);
-      frame.setLocation(100, 100);
+      frame.setLocation(800, 100);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setContentPane(new PinballPanel());
       frame.setVisible(true);
