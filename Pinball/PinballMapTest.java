@@ -56,7 +56,6 @@ public class PinballMapTest extends JPanel
       clip = (Clip) AudioSystem.getLine(info);
       clip.open(stream);*/
       
-      multiplier = 0;
       onof = new int[3];
       for(int i = 0; i < onof.length; i++)
          onof[i] = 0;
@@ -121,7 +120,15 @@ public class PinballMapTest extends JPanel
                   }
                }  
          }
-               
+         for(int r = 0; r < bumpers.length; r++)
+            for(int c = 0; c < bumpers[0].length; c++)
+            {
+               if(BumperCollisionCircular.collide(bumpers[r][c], ball))
+               {
+                  score.update(20, multiplier);
+               }
+            }
+      
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);
