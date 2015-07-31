@@ -126,7 +126,6 @@ public class PinballMapTest extends JPanel
             {
                if(BumperCollisionCircular.collide(bumpers[r][c], ball))
                {
-                  clip.start();
                   score.update(20, multiplier);
                }
             }
