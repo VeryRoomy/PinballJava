@@ -5,12 +5,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-public class PinballMap extends JPanel
+import javax.sound.sampled.*;
+import java.io.File;
+public class PinballMapTest extends JPanel
 {
    private Timer t1, t2;
    private static final ImageIcon venustoise = new ImageIcon("2aa.png");
    private BufferedImage myImage;
    private Graphics2D myBuffer;
+   private PinballBumper[][] bumpers;
+   private PinballBumper[] multipliers;
    private Ball ball;
    private int FRAME = 900;
    private PinballScore score;
@@ -24,12 +28,12 @@ public class PinballMap extends JPanel
    DataLine.Info info;
    Clip clip;*/
    
-   public PinballMap(PinballScore s)
+   public PinballMapTest(PinballScore s)
    {
       score = s;
       myImage =  new BufferedImage(FRAME-300, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = (Graphics2D)myImage.getGraphics();
-      t1 = new Timer(10, new Listener1());
+      t1 = new Timer(100, new Listener1());
       myBuffer.setColor(new Color(208,208,208));
       myBuffer.fillRect(0,0,600,900);
       myBuffer.setColor(Color.gray);
@@ -45,8 +49,18 @@ public class PinballMap extends JPanel
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
       
+      /*file = new File("____.wav");
+      stream = AudioSystem.getAudioInputStream(file);
+      format = stream.getFormat();
+      info = new DataLine.Info(Clip.class, format);
+      clip = (Clip) AudioSystem.getLine(info);
+      clip.open(stream);*/
+      
+      multiplier = 0;
       onof = new int[3];
-            multipliers = new PinballBumper[3];
+      for(int i = 0; i < onof.length; i++)
+         onof[i] = 0;
+      multipliers = new PinballBumper[3];
       for(int i = 0; i < multipliers.length; i++)
       {
          multipliers[i] = new PinballBumper( (i*50)+250, 100, 30, Color.black);
@@ -60,13 +74,13 @@ public class PinballMap extends JPanel
             bumpers[r][c] = new PinballBumper( (r * 100)+100, (c*80)+220, 50, Color.red);
             bumpers[r][c].draw(myBuffer);
          }
-
+   
       ball = new Ball(155, 100, 25, Color.black);
       ball.draw(myBuffer);
       ball.setdx(3);
       ball.setdy(5);
       
-      diag = new DiagBumper(250, 300, 200, 100, .9);
+      diag = new DiagBumper(200, 300, 200, 100, .5);
       diag.draw(myBuffer);
       
       
@@ -77,7 +91,9 @@ public class PinballMap extends JPanel
    }
    public void paintComponent(Graphics g)
    {
-      g.drawImage(myImage, 0, 0, getWidth(), getHeight(), null); 
+      g.drawImage(myImage, 0, 0, getWidth(), getHeight(), null);
+      
+      
    }
    private class Listener1 implements ActionListener
    {
@@ -105,8 +121,16 @@ public class PinballMap extends JPanel
                   }
                }  
          }
-         BumperCollisionDiag.collide(diag, ball);       
-
+         for(int r = 0; r < bumpers.length; r++)
+            for(int c = 0; c < bumpers[0].length; c++)
+            {
+               if(BumperCollisionCircular.collide(bumpers[r][c], ball))
+               {
+                  clip.start();
+                  score.update(20, multiplier);
+               }
+            }
+      
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);
@@ -118,9 +142,14 @@ public class PinballMap extends JPanel
          {
             multipliers[i].draw(myBuffer);
          }
-         diag.draw(myBuffer);
+         for(int r = 0; r < bumpers.length; r++)
+            for(int c = 0; c < bumpers[0].length; c++)
+            {
+               bumpers[r][c].draw(myBuffer);
+            }
          repaint();
          ball.draw(myBuffer);
+         System.out.println(diag.inBumper(ball, myBuffer));
       
          repaint();
       }
