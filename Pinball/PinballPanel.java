@@ -7,13 +7,13 @@ import java.awt.event.*;
 import java.awt.image.*;
 public class PinballPanel extends JPanel
 {
-   private PinballMap map;
+   private PinballMapTest map;
    private PinballScore score;
    public PinballPanel()
    {
       setLayout(new BorderLayout());
       score = new PinballScore();
-      map = new PinballMap(score);
+      map = new PinballMapTest(score);
       add(map, BorderLayout.CENTER);
       add(score, BorderLayout.NORTH);
    }

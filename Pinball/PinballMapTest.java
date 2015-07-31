@@ -121,16 +121,7 @@ public class PinballMapTest extends JPanel
                   }
                }  
          }
-         for(int r = 0; r < bumpers.length; r++)
-            for(int c = 0; c < bumpers[0].length; c++)
-            {
-               if(BumperCollisionCircular.collide(bumpers[r][c], ball))
-               {
-                  clip.start();
-                  score.update(20, multiplier);
-               }
-            }
-      
+               
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);
@@ -149,7 +140,6 @@ public class PinballMapTest extends JPanel
             }
          repaint();
          ball.draw(myBuffer);
-         System.out.println(diag.inBumper(ball, myBuffer));
       
          repaint();
       }
