@@ -24,7 +24,7 @@ public class PinballMap extends JPanel
       score = s;
       myImage =  new BufferedImage(FRAME-300, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = (Graphics2D)myImage.getGraphics();
-      t1 = new Timer(100, new Listener1());
+      t1 = new Timer(10, new Listener1());
       myBuffer.setColor(new Color(208,208,208));
       myBuffer.fillRect(0,0,600,900);
       myBuffer.setColor(Color.gray);
@@ -64,7 +64,7 @@ public class PinballMap extends JPanel
       ball.setdx(3);
       ball.setdy(5);
       
-      diag = new DiagBumper(150, 300, 200, 100, .5);
+      diag = new DiagBumper(250, 300, 200, 100, .9);
       diag.draw(myBuffer);
       
       
@@ -105,15 +105,7 @@ public class PinballMap extends JPanel
                   }
                }  
          }
-         // for(int r = 0; r < bumpers.length; r++)
-//             for(int c = 0; c < bumpers[0].length; c++)
-//             {
-//                if(BumperCollisionCircular.collide(bumpers[r][c], ball))
-//                {
-//                   score.update(20, multiplier);
-//                }
-//             }
-      
+         BumperCollisionDiag.collide(diag, ball);       
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);
@@ -125,14 +117,9 @@ public class PinballMap extends JPanel
          {
             multipliers[i].draw(myBuffer);
          }
-         // for(int r = 0; r < bumpers.length; r++)
-//             for(int c = 0; c < bumpers[0].length; c++)
-//             {
-//                bumpers[r][c].draw(myBuffer);
-//             }
-         repaint();
+         diag.draw(myBuffer);
+                   repaint();
          ball.draw(myBuffer);
-         System.out.println(diag.inBumper(ball, myBuffer));
       
          repaint();
       }
