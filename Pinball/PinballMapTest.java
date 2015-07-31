@@ -56,7 +56,6 @@ public class PinballMapTest extends JPanel
       clip = (Clip) AudioSystem.getLine(info);
       clip.open(stream);*/
       
-      multiplier = 0;
       onof = new int[3];
       for(int i = 0; i < onof.length; i++)
          onof[i] = 0;
@@ -148,7 +147,6 @@ public class PinballMapTest extends JPanel
             }
          repaint();
          ball.draw(myBuffer);
-         System.out.println(diag.inBumper(ball, myBuffer));
       
          repaint();
       }
