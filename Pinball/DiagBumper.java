@@ -13,6 +13,7 @@ public class DiagBumper
       myXSize = s;
       myYSize = y;
       myAngle = a;
+      
       xs[1] =  x1 + (myXSize* Math.cos(myAngle)); //top right x
       ys[1] =  y1 + (myXSize*Math.sin(myAngle)); //top right y
       xs[2] =  x1 + (myXSize*Math.cos(myAngle)-myYSize*Math.sin(myAngle)); //bottom right x
@@ -29,57 +30,84 @@ public class DiagBumper
          xss[k]=(int)(xs[k]);
          yss[k]=(int)(ys[k]);
       }
-      System.out.println(xss[0]);
+      myBuffer.setColor(Color.black);
       myBuffer.fillPolygon(xss,yss, 4);
    }
-   public boolean inBumper(Polkadot dot/*, Graphics buff*/)
+   public void setX(int x , double n)
+   {
+      xs[x] = n;
+   }
+   public void setY(int y , double n)
+   {
+      ys[y] = n;
+   }
+   public double getX(int x)
+   {
+      return xs[x];
+   }
+   public double getY(int y)
+   {
+      return ys[y];
+   }
+   public void setAngle(double n)
+   {
+      myAngle = n;
+      xs[1] =  xs[0] + (myXSize* Math.cos(myAngle)); //top right x
+      ys[1] =  ys[0] + (myXSize*Math.sin(myAngle)); //top right y
+      xs[2] =  xs[0] + (myXSize*Math.cos(myAngle)-myYSize*Math.sin(myAngle)); //bottom right x
+      ys[2] =  ys[0] + (myXSize*Math.sin(myAngle)) + (myYSize*Math.cos(myAngle));
+      xs[3] =  xs[0] - (myYSize*Math.sin(myAngle));
+      ys[3] =  ys[0] + (myYSize*Math.cos(myAngle));
+   }
+   public double getAngle()
+   {
+      return myAngle;
+   }
+
+
+
+   public boolean inBumper(Polkadot dot, Graphics buff)
    {
       // top right edg
-      for(double x = 0; x <= myXSize*Math.cos(myAngle) ; x+=1.0)
+       for(double k = 0; k<1.0; k+=.01)
       {
-         double y = x * Math.tan(myAngle);
-        /* buff.setColor(Color.RED);
-         buff.drawOval((int)(x+xs[0]), (int)(y+ys[0]), 1, 1); */
-         if(distance(x+xs[0], y+ys[0], dot.getX(), dot.getY()) <= dot.getRadius() )
-            return true;            
-      }
-      // bottom left edge
-      for(double x = 0; x <= myXSize*Math.cos(myAngle) ; x+=1.0)
-      {
-         double y = x * Math.tan(myAngle);
-        /* buff.setColor(Color.GREEN);
-         buff.drawOval((int)(xs[2]-x), (int)( ys[2]-y), 1, 1);*/
-         if(distance(xs[2]-x, ys[2]-y, dot.getX(), dot.getY()) <= dot.getRadius() )
-            return true;  
-      }
-      // top left edge
-      for(double k = 0; k <= Math.abs(xs[0]-xs[3]); k+=1.0)
-      {
-         double x = k*sign(myAngle);
-         double y = x/Math.tan(myAngle);
-        /* buff.setColor(Color.blue);
-         buff.drawOval((int)(xs[0]-x), (int)( ys[0]+y), 1, 1); */
-         if(distance(xs[0]-x, ys[0]+y, dot.getX(), dot.getY()) <= dot.getRadius() )
+         double x = xs[0] + k*(xs[1] - xs[0]);
+         double y = ys[0] + k*(ys[1] - ys[0]);
+         // buff.setColor(Color.BLUE);
+      //    buff.drawOval((int)(x), (int)(y), 1, 1);
+         if(distance(x, y, dot.getX(), dot.getY()) <= dot.getRadius() )
             return true;
       }
-      // top right edge
-      for(double k = 0; k <= Math.abs(xs[1]-xs[2]); k+=1.0)
+      for(double k = 0; k<1.0; k+=.01)
       {
-         double x = k*sign(myAngle);
-         double y = x/Math.tan(myAngle);
-        /* buff.setColor(Color.blue);
-         buff.drawOval((int)(xs[1]-x), (int)( ys[1]+y), 1, 1);*/
-         if(distance(xs[1]-x, ys[1]+y, dot.getX(), dot.getY()) <= dot.getRadius() )
-         {
-            System.out.println("DFHADVHVADFHADFDHADFHADFHAGHFBFEHAAFHBFH");
-         
-            return true;  
-         }
-            
-                           
+         double x = xs[1] + k*(xs[2] - xs[1]);
+         double y = ys[1] + k*(ys[2] - ys[1]);
+         // buff.setColor(Color.BLUE);
+      //    buff.drawOval((int)(x), (int)(y), 1, 1);
+         if(distance(x, y, dot.getX(), dot.getY()) <= dot.getRadius() )
+            return true;
       }
+      for(double k = 0; k<1.0; k+=.01)
+      {
+         double x = xs[2] + k*(xs[3] - xs[2]);
+         double y = ys[2] + k*(ys[3] - ys[2]);
+        // buff.setColor(Color.BLUE);
+      //    buff.drawOval((int)(x), (int)(y), 1, 1);
+         if(distance(x, y, dot.getX(), dot.getY()) <= dot.getRadius() )
+            return true;
+      }
+      for(double k = 0; k<1.0; k+=.01)
+      {
+         double x = xs[3] + k*(xs[0] - xs[3]);
+         double y = ys[3] + k*(ys[0] - ys[3]);
+        // buff.setColor(Color.BLUE);
+      //    buff.drawOval((int)(x), (int)(y), 1, 1);
+         if(distance(x, y, dot.getX(), dot.getY()) <= dot.getRadius() )
+            return true;
+      }      
       return false; 
    }
+   
    
       // returns distance between (xs[0], ys[0]) and (x2, y2)
    private double distance(double x1, double y1, double x2, double y2)
@@ -87,7 +115,8 @@ public class DiagBumper
       return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
    }
    
-   public int sign(double d){
+   public int sign(double d)
+   {
       return(int)( Math.abs(d)/d	);
    }
 }

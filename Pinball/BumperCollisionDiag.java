@@ -30,7 +30,7 @@ public class BumperCollisionDiag
          int dy=(int)ball.getdy();
          double dot_1= ux*dx+uy*dy;
          double dot_2=-uy*dx+ux*dy;
-         dot_1*=-0.8; // this is the actual "bounce"
+         dot_1*=-.9; // this is the actual "bounce"
          double[] d = new double[2];
          d[0]=dot_1*ux-dot_2*uy;      //vector math
          d[1]=dot_1*uy+dot_2*ux;      //vector math
@@ -48,41 +48,39 @@ public class BumperCollisionDiag
       nearestY = bumper.ys[0];
          
          // now work around the edge of the bumper looking for a closer point
-      for(double x = 0; x <=bumper.myXSize*Math.cos(bumper.myAngle) ; x+=1.0)
-      {         
-      double y = x * Math.tan(bumper.myAngle);
+      for(double k = 0; k<1.0; k+=.01)
+         {
+         double x = bumper.xs[0] + k*(bumper.xs[1] - bumper.xs[0]);
+         double y = bumper.ys[0] + k*(bumper.ys[1] - bumper.ys[0]);
+         updateIfCloser(x, y, ball);
+         }
+         
+    for(double k = 0; k<1.0; k+=.01)
+         {
+         double x = bumper.xs[0] + k*(bumper.xs[2] - bumper.xs[1]);
+         double y = bumper.ys[0] + k*(bumper.ys[2] - bumper.ys[1]);
+         
+                  updateIfCloser(x, y, ball);
 
-         double y1 = bumper.ys[0] + y;
-         double x1 = bumper.xs[0] + x;        
-         updateIfCloser(x1, y1, ball);
-      
-      }
-      // bottom left edge
-      for(double x = 0; x <= bumper.myXSize*Math.cos(bumper.myAngle) ; x+=1.0)
-      {
-         double y = x * Math.tan(bumper.myAngle);
-      
-         double x1 = bumper.xs[2]-x;
-         double y1 = bumper.ys[2] - y;
-         updateIfCloser(x1, y1, ball);
-      
-      }
-               // top left edge
-      for(double k = 0; k <= Math.abs(bumper.xs[0]-bumper.xs[3]); k+=1.0)
-      {
-         double x1 = k*bumper.sign(bumper.myAngle);
-         double y1 = x1/Math.tan(bumper.myAngle);
-         updateIfCloser(bumper.xs[0]-x1,bumper.ys[0] + y1, ball);
-      
-      }
-      // top right edge
-      for(double k = 0; k <= Math.abs(bumper.xs[1]-bumper.xs[2]); k+=1.0)
-      {
-         double x1 = k*bumper.sign(bumper.myAngle);
-         double y1 = x1/Math.tan(bumper.myAngle);
-         updateIfCloser(bumper.xs[1]-x1, bumper.ys[1] + y1, ball);
-      
-      }
+         }
+
+    for(double k = 0; k<1.0; k+=.01)
+         {
+         double x = bumper.xs[0] + k*(bumper.xs[3] - bumper.xs[2]);
+         double y = bumper.ys[0] + k*(bumper.ys[3] - bumper.ys[2]);
+         
+                  updateIfCloser(x, y, ball);
+
+         }
+    for(double k = 0; k<1.0; k+=.01)
+         {
+         double x = bumper.xs[0] + k*(bumper.xs[3] - bumper.xs[0]);
+         double y = bumper.ys[0] + k*(bumper.ys[3] - bumper.ys[0]);
+         
+                  updateIfCloser(x, y, ball);
+
+         }
+
    
    
                
