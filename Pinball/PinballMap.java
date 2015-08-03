@@ -129,7 +129,12 @@ public class PinballMap extends JPanel
          }
          
          BumperCollisionDiag.collide(diag, ball);       
-      
+         score.checklives(ball.getY());
+         if(ball.getY() > 750)
+         {
+            ball.setX(155);
+            ball.setY(100);
+         }
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,600,900);
          myBuffer.setColor(Color.black);
