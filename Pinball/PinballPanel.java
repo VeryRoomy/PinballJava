@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 public class PinballPanel extends JPanel
 {
-   private PinballMap map;
+   private PinballMapTest map;
    private PinballScore score;
    JFrame menuFrame, contentFrame;
    public PinballPanel(JFrame f, JFrame fr)
@@ -16,7 +16,7 @@ public class PinballPanel extends JPanel
       contentFrame = fr;
       setLayout(new BorderLayout());
       score = new PinballScore();
-      map = new PinballMap(score);
+      map = new PinballMapTest(score);
       add(map, BorderLayout.CENTER);
       add(score, BorderLayout.NORTH);
       JButton back = new JButton("Back");
