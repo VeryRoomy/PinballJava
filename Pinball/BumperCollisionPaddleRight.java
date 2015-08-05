@@ -40,7 +40,7 @@ public class BumperCollisionPaddleRight
             if ( hit )/// *** CHANGED
                dot_1 *= -1;/// *** CHANGED
             else/// *** CHANGED
-               dot_1*=-2.5; // this is the actual "bounce"
+               dot_1*=-2.65; // this is the actual "bounce"
             double[] d = new double[2];
             d[0]=dot_1*ux-dot_2*uy;      //vector math
             d[1]=dot_1*uy+dot_2*ux;      //vector math

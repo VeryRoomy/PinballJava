@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.*;
+import javax.sound.sampled.*;
 public class PinballMap extends JPanel
 {
    private Timer t1, t2;
@@ -21,12 +23,13 @@ public class PinballMap extends JPanel
    private DiagBumper bump, bump2, paddle, pHelper, downbump, topbump, fix;
    private DiagBumperRight bump3, bump4, paddleR, prHelper, downbumpR, channelbump1, channelbump2, topbumpR, fix2;
    private boolean pressed, pressed2;
+   private int[] cooldown;
      
-   /*File file;
+   File file;
    AudioInputStream stream;
    AudioFormat format;
    DataLine.Info info;
-   Clip clip;*/
+   Clip clip;
    
    public PinballMap(PinballScore s)
    {
@@ -51,17 +54,21 @@ public class PinballMap extends JPanel
    
       myBuffer.setStroke(new BasicStroke(20.0f));
       myBuffer.drawPolyline(x, y, 4);
-      
-      /*file = new File("____.wav");
-      stream = AudioSystem.getAudioInputStream(file);
-      format = stream.getFormat();
-      info = new DataLine.Info(Clip.class, format);
-      clip = (Clip) AudioSystem.getLine(info);
-      clip.open(stream);*/
-      
+      try
+      {
+         file = new File("mvp.wav");
+         stream = AudioSystem.getAudioInputStream(file);
+         format = stream.getFormat();
+         info = new DataLine.Info(Clip.class, format);
+         clip = (Clip) AudioSystem.getLine(info);
+         clip.open(stream);
+      }
+      catch(Exception e)
+      {
+         System.exit(0);
+      }
+      cooldown = new int[3];
       onof = new int[3];
-      for(int i = 0; i < onof.length; i++)
-         onof[i] = 0;
       multipliers = new PinballBumper[3];
       for(int i = 0; i < multipliers.length; i++)
       {
@@ -73,7 +80,7 @@ public class PinballMap extends JPanel
       requestFocus();
       addKeyListener(new Key());
       
-      ball = new Ball(400, 200, 25, Color.black);
+      ball = new Ball(570, 350, 25, Color.black);
       ball.draw(myBuffer);
       ball.setdx(3);
       ball.setdy(5);
@@ -87,10 +94,10 @@ public class PinballMap extends JPanel
       bump4 = new DiagBumperRight(580, 750, 250, 15, 75);
       bump4.draw(myBuffer);
       
-       // fix = new DiagBumper(200, 840, 15, 20, 35);
-      //  fix.draw(myBuffer);
-      //  fix2 = new DiagBumperRight(495, 840, 20, 15, 35);
-      //  fix2.draw(myBuffer);
+      fix = new DiagBumper(200, 840, 15, 20, 35);
+      fix.draw(myBuffer);
+      fix2 = new DiagBumperRight(495, 840, 20, 15, 35);
+      fix2.draw(myBuffer);
    
       
       pHelper = new DiagBumper(133, 800, 100, 15, 25);
@@ -99,13 +106,13 @@ public class PinballMap extends JPanel
       prHelper.draw(myBuffer);
    
       
-      paddle = new DiagBumper(200, 830, 125, 20, 35);
+      paddle = new DiagBumper(200, 833, 125, 20, 35);
       paddle.draw(myBuffer);
-      paddleR = new DiagBumperRight(500, 830, 125, 20, 35);
+      paddleR = new DiagBumperRight(500, 833, 125, 20, 35);
       paddleR.draw(myBuffer);
       
-      downbump = new DiagBumper( 50, 590, 120, 15, 45);
-      downbumpR = new DiagBumperRight( 650, 590, 120, 15, 45);
+      downbump = new DiagBumper( 50, 600, 120, 15, 45);
+      downbumpR = new DiagBumperRight( 650, 600, 120, 15, 45);
       downbump.draw(myBuffer);
       downbumpR.draw(myBuffer);  
       
@@ -132,9 +139,14 @@ public class PinballMap extends JPanel
       toptrio1.draw(myBuffer);
       toptrio2.draw(myBuffer);
       toptrio3.draw(myBuffer);
+      
+      sideline = new PinballBumper( 565, 200, 75, Color.white);
+      sideline.draw(myBuffer);
           
       t1.start();
       t2.start();
+      clip.loop(0);
+
    }
    public void paintComponent(Graphics g)
    {
@@ -146,45 +158,91 @@ public class PinballMap extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {
+         for(int i = 0; i < cooldown.length; i++)
+         {
+            cooldown[i]--;
+         }
          int x[] = {50, 50,  650, 650};
          int y[] = {750, 50, 50, 750};
       
          for(int i = 0; i < multipliers.length; i++)
          {
-            if(onof[i] == 0)
-               if(BumperCollisionNot.collide(multipliers[i], ball))
-               {
-                  multipliers[i].setColor(Color.yellow);
-                  onof[i] = 1;
-                  multiplier += 5;
+            if(cooldown[i] < 0){
+               if(onof[i] == 0){
+                  if(BumperCollisionNot.collide(multipliers[i], ball))
+                  {
+                     multipliers[i].setColor(Color.yellow);
+                     onof[i] = 1;
+                     multiplier += 5;
+                     cooldown[i] = 50;
+                  }
                }
-               else
+               else if(onof[i] == 1)
                {
                   if(BumperCollisionNot.collide(multipliers[i], ball))
                   {
                      multipliers[i].setColor(Color.black);
                      onof[i] = 0;
                      multiplier -= 5;
+                     cooldown[i] = 50;
                   }
-               }  
+               } 
+            } 
          } 
-         if(BumperCollisionCircular.collide(bigbumper, ball))
+         if(BumperCollisionCircular.collide(bigbumper, ball)){
             score.update(50, multiplier);
-         if(BumperCollisionCircular.collide(medbumper, ball))
+            // try
+//             {
+//                file = new File("ding.wav");
+//                stream = AudioSystem.getAudioInputStream(file);
+//                format = stream.getFormat();
+//                info = new DataLine.Info(Clip.class, format);
+//                clip = (Clip) AudioSystem.getLine(info);
+//                clip.open(stream);
+//             }
+//             catch(Exception asd)
+//             {
+//                System.exit(0);
+//             }
+         
+         }
+         if(BumperCollisionCircular.collide(medbumper, ball)){
             score.update(50, multiplier);
-         if(BumperCollisionCircular.collide(smallbumper, ball))
+            // clip.loop(0);
+          
+         }
+            
+         if(BumperCollisionCircular.collide(smallbumper, ball)){
             score.update(75, multiplier);
-         if(BumperCollisionCircular.collide(toptrio1, ball))
+            // clip.loop(0);
+         
+         }
+         if(BumperCollisionCircular.collide(toptrio1, ball)){
             score.update(100, multiplier); 
-         if(BumperCollisionCircular.collide(toptrio2, ball))
+            // clip.loop(0);
+         
+         }
+         if(BumperCollisionCircular.collide(toptrio2, ball)){
             score.update(100, multiplier);
-         if(BumperCollisionCircular.collide(toptrio3, ball))
-            score.update(100, multiplier);        
+            // clip.loop(0);
+         
+         }
+         if(BumperCollisionCircular.collide(toptrio3, ball)){
+            score.update(100, multiplier);
+            // clip.loop(0);
+         
+         }  
+         if(BumperCollisionCircular.collide(sideline, ball)){
+            score.update(125, multiplier);
+            // clip.loop(0);
+         
+         }  
+         ///////////////////////////////////    
          score.checklives(ball.getY());
          if(ball.getY() > 1000)
          {
-            ball.setX(155);
-            ball.setY(100);
+            ball.setX(570);
+            ball.setY(350);
          }
          myBuffer.setColor(new Color(208,208,208));
          myBuffer.fillRect(0,0,700,1080);
@@ -219,11 +277,10 @@ public class PinballMap extends JPanel
          BumperCollisionDiagRight.collide(channelbump2, ball, myBuffer);
          BumperCollisionDiag.collide(topbump, ball, myBuffer);
          BumperCollisionDiagRight.collide(topbumpR, ball, myBuffer);
-         // BumperCollisionDiag.collide(fix, ball, myBuffer);
-         // BumperCollisionDiagRight.collide(fix2, ball, myBuffer);
+         BumperCollisionDiag.collide(fix, ball, myBuffer);
+         BumperCollisionDiagRight.collide(fix2, ball, myBuffer);
       
          
-            
             
       
       
@@ -250,9 +307,11 @@ public class PinballMap extends JPanel
          toptrio1.draw(myBuffer);
          toptrio2.draw(myBuffer);
          toptrio3.draw(myBuffer);
+         sideline.draw(myBuffer);
          
       
          repaint();
+//          clip.stop();
       }
    
    }
@@ -270,9 +329,11 @@ public class PinballMap extends JPanel
          
             bpress = true ;
             BumperCollisionPaddle.setPressed(true);
-            for (int i = 0 ; i < 50 ; i ++)
+            for (int i = 0 ; i < 25 ; i ++)
             {
-               paddle.setAngle( paddle.getAngle() - 1);              
+               paddle.setAngle( paddle.getAngle() - 2);     
+               paddle.draw(myBuffer);
+               repaint();         
                if( BumperCollisionPaddle.collide(paddle, ball, myBuffer, hit) )/// *** CHANGED
                   hit = true;/// *** CHANGED
                  
@@ -284,15 +345,18 @@ public class PinballMap extends JPanel
             
             BumperCollisionPaddle.setPressed(false);
             
+            
          }
          else if(e.getKeyCode() == KeyEvent.VK_B && !bpress2)
          {
             boolean hit2 = false;
             bpress2 = true ;
             BumperCollisionPaddleRight.setPressed(true);
-            for (int i = 0 ; i < 50 ; i ++)
+            for (int i = 0 ; i < 25 ; i ++)
             {
-               paddleR.setAngle( paddleR.getAngle() - 1);              
+               paddleR.setAngle( paddleR.getAngle() - 2);    
+               paddleR.draw(myBuffer);
+               repaint();          
                //if(!hit2)               
                if( BumperCollisionPaddleRight.collide(paddleR, ball, myBuffer, hit2) )/// *** CHANGED
                   hit2 = true;/// *** CHANGED
