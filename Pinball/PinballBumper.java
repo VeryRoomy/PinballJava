@@ -3,6 +3,8 @@
 // updated by Phil Ero 16NOV07
 
 import java.awt.*;
+import java.io.*;
+import javax.sound.sampled.*;
 
 public class PinballBumper
 {
@@ -11,6 +13,11 @@ public class PinballBumper
    private double myDiameter;
    private Color myColor; 
    private double myRadius;
+   File file;
+   AudioInputStream stream;
+   AudioFormat format;
+   DataLine.Info info;
+   Clip clip;
   // constructors
    public PinballBumper()     //default constructor
    {
@@ -56,7 +63,7 @@ public class PinballBumper
    } 
    public void setY(double y)
    {
-     myY = y;
+      myY = y;
    } 
    public void setColor(Color c)
    {
@@ -94,4 +101,19 @@ public class PinballBumper
    {
       return distance(getX(),getY(),ball.getX(),ball.getY()) <= getRadius() + ball.getRadius();
    }
+   public void playSound()
+   {
+      try
+      {
+         file = new File("ding.wav");
+         stream = AudioSystem.getAudioInputStream(file);
+         format = stream.getFormat();
+         info = new DataLine.Info(Clip.class, format);
+         clip = (Clip) AudioSystem.getLine(info);
+         clip.open(stream);
+      }
+      catch(Exception b){}
+      clip.start();
+   }
+   
 }

@@ -37,6 +37,7 @@
             dy=(int)Math.round(d[1]);
             ball.setdx(dx);
             ball.setdy(dy);
+            bumper.playSound();
             return true;
          }
          return false;
