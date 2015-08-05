@@ -12,7 +12,7 @@ public class DiagBumperRight
       this.ys[0] = y1;
       myXSize = s;
       myYSize = y;
-      myAngle = a;
+      myAngle = (a * Math.PI) / 180;
       
       xs[1] =  x1 - (myXSize*Math.cos(myAngle)); //top right x
       ys[1] =  y1 + (myXSize*Math.sin(myAngle)); //top right y
@@ -51,7 +51,7 @@ public class DiagBumperRight
    }
    public void setAngle(double n)
    {
-      myAngle = n;
+      myAngle = (n * Math.PI) / 180;
       xs[1] =  xs[0] - (myXSize*Math.cos(myAngle)); //top right x
       ys[1] =  ys[0] + (myXSize*Math.sin(myAngle)); //top right y
       xs[2] =  xs[0] + (myYSize*Math.sin(myAngle)) - (myXSize*Math.cos(myAngle)); //bottom right x
@@ -62,7 +62,7 @@ public class DiagBumperRight
    }
    public double getAngle()
    {
-      return myAngle;
+      return myAngle  * (180 / Math.PI);
    }
 
 

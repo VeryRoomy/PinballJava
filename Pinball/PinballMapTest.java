@@ -87,6 +87,7 @@ public class PinballMapTest extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {
+         requestFocus();
          int x[] = {50, 50,  550, 550};
          int y[] = {700, 50, 50, 700};
       

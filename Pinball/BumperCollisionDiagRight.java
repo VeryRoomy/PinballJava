@@ -4,12 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 
-public class BumperCollisionDiag
+public class BumperCollisionDiagRight
 {
    private static double nearestX;	// used to approximate what point of the bumper  
    private static double nearestY;  // a ball collided with
    
-   public static void collide(DiagBumper bumper, Ball ball, Graphics myBuffer)
+   public static void collide(DiagBumperRight bumper, Ball ball, Graphics myBuffer)
    {
          // see if the ball hit the bumper!
       if(bumper.inBumper(ball, myBuffer))
@@ -41,10 +41,11 @@ public class BumperCollisionDiag
          dy=(int)Math.round(d[1]);
          ball.setdx(dx);
          ball.setdy(dy);
+         
       }
    }
       
-   private static void findImpactPoint(DiagBumper bumper, Ball ball)
+   private static void findImpactPoint(DiagBumperRight bumper, Ball ball)
    {
           // first assume the nw corner is closest
       nearestX = bumper.xs[0];  
@@ -83,12 +84,6 @@ public class BumperCollisionDiag
          updateIfCloser(x, y, ball);
       
       }
-   
-   
-   
-               
-               
-               
    }
          
       // makes (x,y) the nearest point if it is closer to the ball

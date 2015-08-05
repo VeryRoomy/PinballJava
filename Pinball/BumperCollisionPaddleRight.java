@@ -11,74 +11,77 @@ public class BumperCollisionPaddleRight
    private static double nearestY;  // a ball collided with
    private static boolean pressed;
       
-   public static void collide(DiagBumperRight bumper, Ball ball, Graphics myBuffer)
+   public static boolean collide(DiagBumperRight bumper, Ball ball, Graphics myBuffer, boolean hit)/// *** CHANGED
    {
          // see if the ball hit the bumper!
-      if(bumper.inBumper(ball, myBuffer) && pressed==true)
-      {	   	
+      if(bumper.inBumper(ball, myBuffer) ){
+         if( pressed==true)
+         {	   	
             // back the ball up until it is just outside the bumper
-         while(bumper.inBumper(ball, myBuffer))
-         {
-            System.out.println("in padel FGDFSFDBGSDFGSGDFGFDS");
-            ball.setX(ball.getX() - ball.getdx()/10.0);
-            ball.setY(ball.getY() - ball.getdy()/10.0);
-         }
-
+            while(bumper.inBumper(ball, myBuffer))
+            {
+               //ball.setX(ball.getX() - ball.getdx()/10.0);
+               ball.setY(ball.getY() - 1/10.0); /// *** CHANGED
+            }
+         
             
             // find the point on the edge of the bumper closest to the ball
-         findImpactPoint(bumper, ball);
+            findImpactPoint(bumper, ball);
          	
-         double ux=nearestX-ball.getX();
-         double uy=nearestY-ball.getY();
-         double ur=Math.sqrt(ux*ux+uy*uy);
-         ux/=ur;
-         uy/=ur;
-         int dx=(int)ball.getdx();
-         int dy=(int)ball.getdy();
-         double dot_1= ux*dx+uy*dy;
-         double dot_2=-uy*dx+ux*dy;
-         dot_1*=-2.5; // this is the actual "bounce"
-         double[] d = new double[2];
-         d[0]=dot_1*ux-dot_2*uy;      //vector math
-         d[1]=dot_1*uy+dot_2*ux;      //vector math
-         dx=(int)Math.round(d[0]);
-         dy=(int)Math.round(d[1]);
-         ball.setdx(dx);
-         ball.setdy(dy);
-      }
-      else if(bumper.inBumper(ball, myBuffer) && pressed==false)
-      
-      {
-         while(bumper.inBumper(ball, myBuffer))
-         {
-            System.out.println("in padel FGDFSFDBGSDFGSGDFGFDS");
-            ball.setX(ball.getX() - ball.getdx()/10.0);
-            ball.setY(ball.getY() - ball.getdy()/10.0);
+            double ux=nearestX-ball.getX();
+            double uy=nearestY-ball.getY();
+            double ur=Math.sqrt(ux*ux+uy*uy);
+            ux/=ur;
+            uy/=ur;
+            int dx=(int)ball.getdx();
+            int dy=(int)ball.getdy();
+            double dot_1= ux*dx+uy*dy;
+            double dot_2=-uy*dx+ux*dy;
+            if ( hit )/// *** CHANGED
+               dot_1 *= -1;/// *** CHANGED
+            else/// *** CHANGED
+               dot_1*=-2.5; // this is the actual "bounce"
+            double[] d = new double[2];
+            d[0]=dot_1*ux-dot_2*uy;      //vector math
+            d[1]=dot_1*uy+dot_2*ux;      //vector math
+            dx=(int)Math.round(d[0]);
+            dy=(int)Math.round(d[1]);
+            System.out.println(dy);
+            ball.setdx(dx);
+            ball.setdy(dy);
          }
+         else      
+         {
+            while(bumper.inBumper(ball, myBuffer))
+            {
+               ball.setX(ball.getX() - ball.getdx()/10.0);
+               ball.setY(ball.getY() - ball.getdy()/10.0);
+            }
             
             // find the point on the edge of the bumper closest to the ball
-         findImpactPoint(bumper, ball);
+            findImpactPoint(bumper, ball);
          	
-         double ux=nearestX-ball.getX();
-         double uy=nearestY-ball.getY();
-         double ur=Math.sqrt(ux*ux+uy*uy);
-         ux/=ur;
-         uy/=ur;
-         int dx=(int)ball.getdx();
-         int dy=(int)ball.getdy();
-         double dot_1= ux*dx+uy*dy;
-         double dot_2=-uy*dx+ux*dy;
-         dot_1*=-.8; // this is the actual "bounce"
-         double[] d = new double[2];
-         d[0]=dot_1*ux-dot_2*uy;      //vector math
-         d[1]=dot_1*uy+dot_2*ux;      //vector math
-         dx=(int)Math.round(d[0]);
-         dy=(int)Math.round(d[1]);
-         ball.setdx(dx);
-         ball.setdy(dy);
+            double ux=nearestX-ball.getX();
+            double uy=nearestY-ball.getY();
+            double ur=Math.sqrt(ux*ux+uy*uy);
+            ux/=ur;
+            uy/=ur;
+            int dx=(int)ball.getdx();
+            int dy=(int)ball.getdy();
+            double dot_1= ux*dx+uy*dy;
+            double dot_2=-uy*dx+ux*dy;
+            dot_1*=-.8; // this is the actual "bounce"
+            double[] d = new double[2];
+            d[0]=dot_1*ux-dot_2*uy;      //vector math
+            d[1]=dot_1*uy+dot_2*ux;      //vector math
+            dx=(int)Math.round(d[0]);
+            dy=(int)Math.round(d[1]);
+            ball.setdx(dx);
+            ball.setdy(dy);
+         }
+         return true;
       }
-      
-   
+      return false;
    }
       
    private static void findImpactPoint(DiagBumperRight bumper, Ball ball)

@@ -29,7 +29,7 @@
             int dy=(int)ball.getdy();
             double dot_1= ux*dx+uy*dy;
             double dot_2=-uy*dx+ux*dy;
-            dot_1*=-1.2; // this is the actual "bounce"
+            dot_1*=-1.3; // this is the actual "bounce"
             double[] d = new double[2];
             d[0]=dot_1*ux-dot_2*uy;      //vector math
             d[1]=dot_1*uy+dot_2*ux;      //vector math

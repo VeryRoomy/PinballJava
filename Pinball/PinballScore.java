@@ -16,7 +16,7 @@ public class PinballScore extends JPanel
    private JLabel highscore;
    public PinballScore()
    {
-      lives = 3;
+      lives = 5;
       label = new JLabel("Your score: " + 0);
       add(label);
       labellives = new JLabel("Lives: " + lives);
@@ -47,7 +47,7 @@ public class PinballScore extends JPanel
    }
    public void checklives(double y)
    {
-      if(y > 750)
+      if(y > 1000)
       {
          lives--;
          labellives.setText("Lives: " + lives);
