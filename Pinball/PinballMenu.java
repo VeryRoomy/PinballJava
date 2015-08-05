@@ -1,6 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.applet.Applet;
+import java.awt.image.*;
+import java.io.*;
+import java.net.URL;
+import javax.imageio.*;
 
 public class PinballMenu extends JPanel
 {
@@ -8,9 +13,17 @@ public class PinballMenu extends JPanel
    
    public PinballMenu()
    {
+      
+       ImageIcon image = new ImageIcon("pinballwizard.png");
+       
+      setLayout(new BorderLayout());
+      JLabel picture = new JLabel();
+      picture.setIcon(image);
+      add(picture, BorderLayout.NORTH);
       JButton play = new JButton("Play Pinball");
       play.addActionListener(new playListener());
-      add(play);
+      add(play, BorderLayout.SOUTH);
+      
    }
    private class playListener implements ActionListener
    {
@@ -30,13 +43,13 @@ public class PinballMenu extends JPanel
          {
             contentFrame.setVisible(true);
          }
-
+      
       }
    }
    public static void main(String[] args)
    {
       menuFrame = new JFrame("MAIN MENU");
-      menuFrame.setSize(250, 100);
+      menuFrame.setSize(400, 400);
       menuFrame.setLocation(800, 500);
       menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       menuFrame.setContentPane(new PinballMenu());

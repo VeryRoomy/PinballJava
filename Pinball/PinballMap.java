@@ -106,9 +106,9 @@ public class PinballMap extends JPanel
       prHelper.draw(myBuffer);
    
       
-      paddle = new DiagBumper(200, 833, 125, 20, 35);
+      paddle = new DiagBumper(200, 833, 130, 20, 35);
       paddle.draw(myBuffer);
-      paddleR = new DiagBumperRight(500, 833, 125, 20, 35);
+      paddleR = new DiagBumperRight(500, 833, 130, 20, 35);
       paddleR.draw(myBuffer);
       
       downbump = new DiagBumper( 50, 615, 120, 15, 45);
