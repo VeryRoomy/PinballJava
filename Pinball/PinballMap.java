@@ -399,6 +399,10 @@ public class PinballMap extends JPanel
          repaint();
       }
    }
+   public void stopClip()
+   {
+      clip.stop();
+   }
 
 
 }

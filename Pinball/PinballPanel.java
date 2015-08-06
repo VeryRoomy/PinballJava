@@ -27,6 +27,7 @@ public class PinballPanel extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {
+         map.stopClip();
          menuFrame.setVisible(true);
          contentFrame.setVisible(false);
       }
